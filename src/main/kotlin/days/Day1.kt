@@ -1,6 +1,8 @@
 package days
 
 import util.InputReader
+import util.infiniteList
+import util.scan
 
 class Day1 : Day {
 
@@ -12,37 +14,19 @@ class Day1 : Day {
     }
 
     override fun partTwo(): Int {
-        val infiniteFrequencies = InfiniteList(InputReader.getInputAsList(1))
-        val reachedFrequencies = mutableSetOf<Int>()
-        val repeatedFreq: Int
-        var currentFreq = 0
-
-        while (true) {
-            currentFreq += infiniteFrequencies.next().toInt()
-            if (!reachedFrequencies.contains(currentFreq)) {
-                reachedFrequencies.add(currentFreq)
-            }
-            else {
-                repeatedFreq = currentFreq
-                break
-            }
+        val frequencies = InputReader.getInputAsList(1)
+        val bar = infiniteList(frequencies).scan(FreqSeenTracker()) { foo, freq ->
+            FreqSeenTracker(foo.currentFreq + freq.toInt())
         }
-
-        return repeatedFreq
+        return bar.find { it.seenBefore }!!.currentFreq
     }
 
-    class InfiniteList<T>(private val base: List<T>) {
+    class FreqSeenTracker(freq: Int? = null) {
+        val currentFreq = freq ?: 0
+        val seenBefore = if (freq != null) !FreqSeenTracker.seenFreqs.add(freq) else false
 
-        private var index: Int = -1
-
-        fun next(): T {
-            if (index + 1 < base.size) {
-                index += 1
-            }
-            else {
-                index = 0
-            }
-            return base[index]
+        companion object {
+            val seenFreqs: MutableSet<Int> = mutableSetOf()
         }
     }
 }
