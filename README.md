@@ -1,0 +1,15 @@
+# aoc-2018
+
+Attempts at [Advent of Code 2018](https://adventofcode.com/2018) in [Kotlin](https://kotlinlang.org/)
+
+### Running
+
+* Navigate to top-level directory on the command line
+* Run `./gradlew run` to run all days
+* Run `./gradlew run --args $DAY` where `$DAY` is an integer to run a specific day
+
+### Testing
+
+* Navigate to top-level directory on the command line
+* Run `./gradlew test`
+* Add `--info`, `--debug` or `--stacktrace` flags for more output
