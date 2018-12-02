@@ -18,7 +18,7 @@ object Runner {
                 return
             }
 
-            val dayClass = getAllDayClasses()?.find { it.simpleName.last().toString().toInt() == day }
+            val dayClass = getAllDayClasses()?.find { dayNumber(it.simpleName) == day }
             if (dayClass != null) {
                 printDay(dayClass)
             }
@@ -42,7 +42,7 @@ object Runner {
     }
 
     private fun printDay(dayClass: Class<out Day>) {
-        println("\n=== DAY ${dayClass.simpleName.last()} ===")
+        println("\n=== DAY ${dayNumber(dayClass.simpleName)} ===")
         val day = dayClass.constructors[0].newInstance() as Day
         println("Part 1: ${day.partOne()}")
         println("Part 2: ${day.partTwo()}")
@@ -51,4 +51,6 @@ object Runner {
     private fun printError(message: String) {
         System.err.println("ERROR\n$message")
     }
+
+    private fun dayNumber(dayClassName: String) = dayClassName.replace("Day", "").toInt()
 }
