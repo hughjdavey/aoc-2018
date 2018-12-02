@@ -5,6 +5,7 @@ import org.hamcrest.collection.IsEmptyCollection.empty
 import org.hamcrest.collection.IsIterableContainingInOrder.contains
 import org.hamcrest.core.Is.`is`
 import org.junit.Test
+import util.lazyAllPossiblePairs
 
 /**
  * Tests for the days package
@@ -35,5 +36,32 @@ class DaysTest {
         assertThat(e.currentFreq, `is`(3))
         assertThat(e.seenBefore, `is`(false))
         assertThat(Day1.FreqSeenTracker.seenFreqs, contains(1, 2, 3))
+    }
+
+    @Test
+    fun testDayTwoPartOneToMatchSummary() {
+        // use the example box ids from day 2 part 1 description
+        val boxIds = listOf("abcdef", "bababc", "abbcde", "abcccd", "aabcdd", "abcdee", "ababab")
+        assertThat(boxIds.map { Day2.toMatchSummary(it) }, contains(
+            Pair(false, false),
+            Pair(true, true),
+            Pair(true, false),
+            Pair(false, true),
+            Pair(true, false),
+            Pair(true, false),
+            Pair(false, true)
+        ))
+    }
+
+    @Test
+    fun testDayTwoPartTwoCommonLetters() {
+        // use the example box ids from day 2 part 2 description
+        assertThat(Day2.commonLetters("fghij", "fguij"), `is`("fgij"))
+
+        val boxIds = listOf("abc", "def", "adc")
+        val commonLettersForAllPairs = lazyAllPossiblePairs(boxIds, boxIds).map { Day2.commonLetters(it.first, it.second) }.take(9).toList()
+        assertThat(commonLettersForAllPairs, contains(
+            "abc", "", "ac", "", "def", "", "ac", "", "adc"
+        ))
     }
 }

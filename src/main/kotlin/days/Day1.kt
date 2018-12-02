@@ -1,21 +1,18 @@
 package days
 
-import util.InputReader
 import util.infiniteList
 import util.scan
 
-class Day1 : Day {
+class Day1 : Day(1) {
 
     override fun partOne(): Int {
-        val frequencies = InputReader.getInputAsList(1)
-        return frequencies.fold(0) { sum, freq ->
+        return inputList.fold(0) { sum, freq ->
             sum + freq.toInt()
         }
     }
 
     override fun partTwo(): Int {
-        val frequencies = InputReader.getInputAsList(1)
-        val bar = infiniteList(frequencies).scan(FreqSeenTracker()) { foo, freq ->
+        val bar = infiniteList(inputList).scan(FreqSeenTracker()) { foo, freq ->
             FreqSeenTracker(foo.currentFreq + freq.toInt())
         }
         return bar.find { it.seenBefore }!!.currentFreq

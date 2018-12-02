@@ -42,7 +42,7 @@ object Runner {
     }
 
     private fun printDay(dayClass: Class<out Day>) {
-        println("=== DAY ${dayClass.simpleName.last()} ===")
+        println("\n=== DAY ${dayClass.simpleName.last()} ===")
         val day = dayClass.constructors[0].newInstance() as Day
         println("Part 1: ${day.partOne()}")
         println("Part 2: ${day.partTwo()}")

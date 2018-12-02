@@ -35,4 +35,12 @@ class UtilTest {
         assertThat(infiniteList(oneToFive).scan(0) { acc, elem -> acc + elem }.take(5).toList(), contains(0, 1, 3, 6, 10))
         assertThat(infiniteList(oneToFive).scan(0) { acc, elem -> acc + elem }.take(10).drop(5).toList(), contains(15, 16, 18, 21, 25))
     }
+
+    @Test
+    fun testLazyAllPossiblePairs() {
+        val allPossiblePairs = lazyAllPossiblePairs(listOf(1, 2, 3), listOf("a", "b", "c"))
+        assertThat(allPossiblePairs.map { it.first.toString() + it.second }.take(5).toList(), contains("1a", "1b", "1c", "2a", "2b"))
+        assertThat(allPossiblePairs.map { it.first.toString() + it.second }.take(9).toList(), contains("1a", "1b", "1c", "2a", "2b", "2c", "3a", "3b", "3c"))
+        assertThat(allPossiblePairs.map { it.first.toString() + it.second }.take(20).toList(), contains("1a", "1b", "1c", "2a", "2b", "2c", "3a", "3b", "3c"))
+    }
 }

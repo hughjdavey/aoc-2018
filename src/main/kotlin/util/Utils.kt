@@ -21,3 +21,13 @@ fun <R, T> Sequence<T>.scan(seed: R, transform: (a: R, b: T) -> R): Sequence<R> 
         override fun hasNext(): Boolean = it.hasNext()
     }
 }
+
+// useful for day 2 part 1
+fun Boolean.toInt(): Int {
+    return if (this) 1 else 0
+}
+
+// return a lazy sequence containing all possible pairs of two input collections
+fun <A, B> lazyAllPossiblePairs(`as`: Collection<A>, bs: Collection<B>): Sequence<Pair<A, B>> {
+    return `as`.asSequence().flatMap { a -> bs.asSequence().map { b -> Pair(a, b) } }
+}

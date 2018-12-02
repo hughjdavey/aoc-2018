@@ -1,6 +1,6 @@
 # aoc-2018
 
-Attempts at [Advent of Code 2018](https://adventofcode.com/2018) in [Kotlin](https://kotlinlang.org/)
+Attempts at [Advent of Code 2018](https://adventofcode.com/2018) in [Kotlin](https://kotlinlang.org/), trying as hard as possible to stay functional and lazy.
 
 ### Running
 
