@@ -2,7 +2,7 @@ package util
 
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.collection.IsIterableContainingInOrder.contains
-import org.hamcrest.core.Is
+import org.hamcrest.core.Is.`is`
 import org.junit.Test
 
 /**
@@ -15,7 +15,7 @@ class UtilTest {
     @Test
     fun testReadInputAsString() {
         val testInputAsString = InputReader.getInputAsString(1)
-        assertThat(testInputAsString, Is.`is`("this\nis\na\ntest input\nfile\n"))
+        assertThat(testInputAsString, `is`("this\nis\na\ntest input\nfile\n"))
     }
 
     @Test

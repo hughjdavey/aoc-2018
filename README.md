@@ -1,6 +1,6 @@
 # aoc-2018
 
-Attempts at [Advent of Code 2018](https://adventofcode.com/2018) in [Kotlin](https://kotlinlang.org/), trying as hard as possible to stay functional and lazy.
+Attempts at [Advent of Code 2018](https://adventofcode.com/2018) in [Kotlin](https://kotlinlang.org/), trying as hard as possible to stay functional and lazy. Project layout and structure is based on my [aoc-kotlin-starter](https://github.com/hughjdavey/aoc-kotlin-starter) project. See below for how to run the project :)
 
 ### Running
 
