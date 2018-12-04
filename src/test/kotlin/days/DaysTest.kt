@@ -5,8 +5,10 @@ import org.hamcrest.collection.IsEmptyCollection.empty
 import org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder
 import org.hamcrest.collection.IsIterableContainingInOrder.contains
 import org.hamcrest.core.Is.`is`
+import org.hamcrest.core.IsNull.notNullValue
 import org.junit.Test
 import util.lazyAllPossiblePairs
+import java.time.LocalDateTime
 
 /**
  * Tests for the days package
@@ -116,5 +118,59 @@ class DaysTest {
             Pair(4, 5), Pair(5, 5), Pair(6, 5), Pair(7, 5), Pair(8, 5),
             Pair(4, 6), Pair(5, 6), Pair(6, 6), Pair(7, 6), Pair(8, 6)
         ))
+    }
+
+    @Test
+    fun testDayFourRecordParsing() {
+        val record1 = Day4.Record("[1518-06-29 00:00] Guard #1153 begins shift")
+        assertThat(record1.dateTime, `is`(LocalDateTime.of(1518, 6, 29, 0, 0)))
+        assertThat(record1.recordContent, `is`("Guard #1153 begins shift"))
+        assertThat(record1.type, `is`(Day4.Record.RecordType.GUARD))
+
+        val record2 = Day4.Record("[1518-05-29 00:56] wakes up")
+        assertThat(record2.dateTime, `is`(LocalDateTime.of(1518, 5, 29, 0, 56)))
+        assertThat(record2.recordContent, `is`("wakes up"))
+        assertThat(record2.type, `is`(Day4.Record.RecordType.WAKE))
+
+        val record3 = Day4.Record("[1518-05-13 00:07] falls asleep")
+        assertThat(record3.dateTime, `is`(LocalDateTime.of(1518, 5, 13, 0, 7)))
+        assertThat(record3.recordContent, `is`("falls asleep"))
+        assertThat(record3.type, `is`(Day4.Record.RecordType.SLEEP))
+    }
+
+    @Test
+    fun testDayFourGuardParsing() {
+        val guard10 = Day4.Guard(Day4.Record("[1518-11-01 00:00] Guard #10 begins shift"))
+        assertThat(guard10.id, `is`(10))
+
+        val guard1153 = Day4.Guard(Day4.Record("[1518-06-29 00:00] Guard #1153 begins shift"))
+        assertThat(guard1153.id, `is`(1153))
+    }
+
+    @Test
+    fun testDayFourMostFrequentMinute() {
+        // guard 10's minutes asleep from day 4 part 1 example
+        val minutes = listOf(
+            Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:05")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:06")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:07")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:08")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:09")),
+            Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:10")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:11")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:12")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:13")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:14")),
+            Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:15")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:16")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:17")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:18")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:19")),
+            Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:20")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:21")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:22")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:23")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:24")),
+            Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:30")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:31")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:32")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:33")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:34")),
+            Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:35")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:36")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:37")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:38")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:39")),
+            Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:40")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:41")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:42")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:43")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:44")),
+            Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:45")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:46")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:47")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:48")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:49")),
+            Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:50")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:51")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:52")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:53")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-01T00:54")),
+            Day4.MinuteAsleep(LocalDateTime.parse("1518-11-03T00:24")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-03T00:25")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-03T00:26")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-03T00:27")), Day4.MinuteAsleep(LocalDateTime.parse("1518-11-03T00:28"))
+        )
+
+        // slightly awkward as we need to create a fake guard and hack its minutesAsleep to test
+        val guard = Day4.Guard(Day4.Record("[1518-11-01 00:00] Guard #10 begins shift"))
+        guard.minutesAsleep.clear()
+        guard.minutesAsleep.addAll(minutes)
+
+        val mostFrequentMinute = guard.mostFrequentMinute()
+        assertThat(mostFrequentMinute!!, notNullValue())
+        assertThat(mostFrequentMinute.key, `is`(24))          // minute 24
+        assertThat(mostFrequentMinute.value, `is`(2))         // 2 days
     }
 }
