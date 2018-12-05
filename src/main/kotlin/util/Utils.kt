@@ -31,3 +31,8 @@ fun Boolean.toInt(): Int {
 fun <A, B> lazyAllPossiblePairs(`as`: Collection<A>, bs: Collection<B>): Sequence<Pair<A, B>> {
     return `as`.asSequence().flatMap { a -> bs.asSequence().map { b -> Pair(a, b) } }
 }
+
+// useful for day 5 part 1
+fun Char.sameLetterDifferentCase(that: Char): Boolean {
+    return this.equals(that, true) && !this.equals(that, false)
+}

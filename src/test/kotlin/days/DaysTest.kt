@@ -173,4 +173,19 @@ class DaysTest {
         assertThat(mostFrequentMinute.key, `is`(24))          // minute 24
         assertThat(mostFrequentMinute.value, `is`(2))         // 2 days
     }
+
+    @Test
+    fun testDayFiveScanAndReact() {
+        // use test input from day 5
+        val reactedPolymer = Day5.scanAndReact("", "dabAcCaCBAcCcaDA")
+        assertThat(reactedPolymer, `is`("dabCBAcaDA"))     // unchanged from last pass
+        assertThat(reactedPolymer.length, `is`(10))
+    }
+
+    @Test
+    fun testDayFiveShortestPolymer() {
+        // use test input from day 5
+        val shortestPolymer = Day5.shortestPolymer("dabAcCaCBAcCcaDA")
+        assertThat(shortestPolymer, `is`(4))
+    }
 }

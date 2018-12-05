@@ -30,13 +30,13 @@ class Day4 : Day(4) {
             }
     }
 
-    override fun partOne(): Any {
+    override fun partOne(): Int {
         val guardMostMinsAsleep = guards.sortedBy { it.minutesAsleep.size }.last()
         val minuteMostAsleep = guardMostMinsAsleep.mostFrequentMinute()?.key
         return guardMostMinsAsleep.id * (minuteMostAsleep?:0)
     }
 
-    override fun partTwo(): Any {
+    override fun partTwo(): Int {
         val guardMostFreqAsleep = guards.sortedBy { it.mostFrequentMinute()?.value }.last()
         val minuteMostAsleep = guardMostFreqAsleep.mostFrequentMinute()?.key
         return guardMostFreqAsleep.id * (minuteMostAsleep?:0)

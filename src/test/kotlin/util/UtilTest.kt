@@ -43,4 +43,18 @@ class UtilTest {
         assertThat(allPossiblePairs.map { it.first.toString() + it.second }.take(9).toList(), contains("1a", "1b", "1c", "2a", "2b", "2c", "3a", "3b", "3c"))
         assertThat(allPossiblePairs.map { it.first.toString() + it.second }.take(20).toList(), contains("1a", "1b", "1c", "2a", "2b", "2c", "3a", "3b", "3c"))
     }
+
+    @Test
+    fun testBooleanToInt() {
+        assertThat(true.toInt(), `is`(1))
+        assertThat(false.toInt(), `is`(0))
+    }
+
+    @Test
+    fun testCharSameLetterDifferentCase() {
+        assertThat('h'.sameLetterDifferentCase('h'), `is`(false))
+        assertThat('H'.sameLetterDifferentCase('H'), `is`(false))
+        assertThat('h'.sameLetterDifferentCase('H'), `is`(true))
+        assertThat('H'.sameLetterDifferentCase('h'), `is`(true))
+    }
 }
