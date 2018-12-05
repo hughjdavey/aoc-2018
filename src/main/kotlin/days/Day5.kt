@@ -1,5 +1,7 @@
 package days
 
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import util.sameLetterDifferentCase
 
 class Day5 : Day(5) {
@@ -20,10 +22,13 @@ class Day5 : Day(5) {
             // map each distinct char in string to string without that char (all cases)
             // then map to reacted polymer and take the length, returning the lowest length
             val distinctUnits = polymer.toLowerCase().toCharArray().distinct()
-            return distinctUnits
-                .map { polymer.replace(it.toString(), "", true) }
-                .map { scanAndReact("", it).length }
-                .min() ?: 0
+            return runBlocking {
+                distinctUnits
+                    .map { polymer.replace(it.toString(), "", true) }
+                    .map { async { scanAndReact(it) } }
+                    .map { it.await().length }
+                    .min() ?: 0
+            }
         }
 
         tailrec fun scanAndReact(oldPolymer: String, polymer: String): String {

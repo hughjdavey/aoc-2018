@@ -18,6 +18,7 @@ repositories {
 
 dependencies {
     compile(kotlin("stdlib-jdk8"))
+    compile("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.1")
     compile("org.reflections", "reflections", "0.9.11")
     testCompile("junit", "junit", "4.12")
     testCompile("org.hamcrest", "hamcrest-library", "1.3")
