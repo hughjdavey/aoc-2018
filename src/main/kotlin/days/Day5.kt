@@ -1,7 +1,5 @@
 package days
 
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
 import util.sameLetterDifferentCase
 
 class Day5 : Day(5) {
@@ -17,17 +15,16 @@ class Day5 : Day(5) {
 
     companion object {
 
+        // todo do this with coroutines not java parallelStream
         fun shortestPolymer(polymer: String): Int {
             // map each distinct char in string to string without that char (all cases)
             // then map to reacted polymer and take the length, returning the lowest length
             val distinctUnits = polymer.toLowerCase().toCharArray().distinct()
-            return runBlocking {
-                distinctUnits
+            return distinctUnits.parallelStream()
                     .map { polymer.replace(it.toString(), "", true) }
-                    .map { async { scanAndReact(it) } }
-                    .map { it.await().length }
-                    .min() ?: 0
-            }
+                    .mapToInt { scanAndReact("", it).length }
+                    .min().orElse(0)
+
         }
 
         tailrec fun scanAndReact(oldPolymer: String, polymer: String): String {
@@ -46,9 +43,11 @@ class Day5 : Day(5) {
                     .filter { it.first < polymer.length - 1 }
                     .find { polymer[it.first].sameLetterDifferentCase(polymer[it.first + 1]) }
 
-            return if (firstReaction != null) {
+            return if (firstReaction == null) {
+                polymer
+            } else {
                 polymer.replaceRange(firstReaction.first, firstReaction.first + 2, "")
-            } else polymer
+            }
         }
     }
 
