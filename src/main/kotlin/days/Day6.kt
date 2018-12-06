@@ -4,29 +4,26 @@ class Day6 : Day(6) {
 
     private val coords = toNamedCoords(inputList)
 
-    // todo improve this!
+    // todo improve performance
     override fun partOne(): Int {
         val allGridCoords = (0..maxX(coords.values)).flatMap { x -> (0..maxY(coords.values)).map { y -> Pair(x, y) } }
+        return allGridCoords.asSequence().map { toClosestName(it) to it }.groupingBy { it.first }
+            .aggregate { _, accumulator: Set<Pair<Int, Int>>?, element, _ -> accumulator?.plus(element.second) ?: setOf(element.second) }
+            .filter { it.value.none { c -> isInfinite(c) } }
+            .map { it.value.size }.max() ?: 0
+    }
 
-        val map = mutableMapOf<String, Int>()
-        val inf = mutableSetOf("")
+    private fun isInfinite(gridCoord: Pair<Int, Int>) : Boolean {
+        return gridCoord.first == 0 || gridCoord.first == maxX(coords.values) ||
+                gridCoord.second == 0 || gridCoord.second == maxY(coords.values)
+    }
 
-        allGridCoords.forEach { coord ->
-            val distancesFromCoords = coords.map { entry -> Pair(entry.key, manhattanDistance(entry.value, coord)) }.sortedBy { it.second }
-            val closestCoord = distancesFromCoords.first()
-            if (distancesFromCoords.filter { it.second == closestCoord.second }.size == 1) {
-                map[closestCoord.first] = (map[closestCoord.first] ?: 0) + 1
+    private fun toClosestName(gridCoord: Pair<Int, Int>): String {
+        val baz = coords.map { namedCoord ->
+            namedCoord.key to manhattanDistance(namedCoord.value, gridCoord)
+        }.sortedBy { it.second }
 
-                if (coord.first == 0 || coord.first == maxX(coords.values) || coord.second == 0 || coord.second == maxY(coords.values)) {
-                    inf.add(closestCoord.first)
-                }
-            }
-        }
-
-        return map.entries
-            .filter { !inf.contains(it.key) }
-            .sortedBy { it.value }
-            .last().value
+        return if (baz.count { it.second == baz.first().second } > 1) "." else baz.first().first
     }
 
     override fun partTwo(): Int {
@@ -34,15 +31,6 @@ class Day6 : Day(6) {
         return allGridCoords.count { coord ->
             val distancesFromCoords = coords.map { entry -> Pair(entry.key, manhattanDistance(entry.value, coord)) }.sortedBy { it.second }
             distancesFromCoords.map { it.second }.sum() < 10000
-        }
-    }
-
-    private fun printGrid(grid: Array<Array<String>>) {
-        for (i in 0 until grid.size) {
-            println()
-            for (j in 0 until grid[0].size) {
-                print(grid[i][j] + " ")
-            }
         }
     }
 

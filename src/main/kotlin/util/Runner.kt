@@ -29,7 +29,7 @@ object Runner {
         else {
             val allDayClasses = getAllDayClasses()
             if (allDayClasses != null) {
-                allDayClasses.forEach { printDay(it) }
+                allDayClasses.sortedBy { it.simpleName }.forEach { printDay(it) }
             }
             else {
                 printError("Couldn't find day classes - make sure you;re in the right directory and try building again")
