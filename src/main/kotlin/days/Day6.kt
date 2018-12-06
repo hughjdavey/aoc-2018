@@ -8,30 +8,25 @@ class Day6 : Day(6) {
     override fun partOne(): Int {
         val allGridCoords = (0..maxX(coords.values)).flatMap { x -> (0..maxY(coords.values)).map { y -> Pair(x, y) } }
 
-        val grid = Array(maxY(coords.values) + 1) { Array(maxX(coords.values) + 1) { "?" } }
-        coords.forEach { coord -> grid[coord.value.second][coord.value.first] = coord.key }
+        val map = mutableMapOf<String, Int>()
+        val inf = mutableSetOf("")
 
         allGridCoords.forEach { coord ->
             val distancesFromCoords = coords.map { entry -> Pair(entry.key, manhattanDistance(entry.value, coord)) }.sortedBy { it.second }
             val closestCoord = distancesFromCoords.first()
-            if (distancesFromCoords.filter { it.second == closestCoord.second }.size > 1) {
-                grid[coord.second][coord.first] = "."
-            }
-            else {
-                grid[coord.second][coord.first] = closestCoord.first.toLowerCase()
+            if (distancesFromCoords.filter { it.second == closestCoord.second }.size == 1) {
+                map[closestCoord.first] = (map[closestCoord.first] ?: 0) + 1
+
+                if (coord.first == 0 || coord.first == maxX(coords.values) || coord.second == 0 || coord.second == maxY(coords.values)) {
+                    inf.add(closestCoord.first)
+                }
             }
         }
 
-        val infiniteCoords = grid.first().plus(grid.last()).plus(grid.map { it.first() }).plus(grid.map { it.last() }).toSet()
-
-        val largestAreaCoord = grid.flatten()
-            .filter { name -> name.all { it.isLowerCase() } }
-            .filter { name -> !infiniteCoords.contains(name) }
-            .groupingBy { it }
-            .eachCount()
-            .values.sorted()
-
-        return largestAreaCoord.max() ?: 0
+        return map.entries
+            .filter { !inf.contains(it.key) }
+            .sortedBy { it.value }
+            .last().value
     }
 
     override fun partTwo(): Int {
