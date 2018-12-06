@@ -1,5 +1,6 @@
 package days
 
+import util.parallelMap
 import util.sameLetterDifferentCase
 
 class Day5 : Day(5) {
@@ -10,6 +11,7 @@ class Day5 : Day(5) {
     }
 
     override fun partTwo(): Int {
+        println("// Day 5 Part 2 takes about 11 seconds...")
         return shortestPolymer(inputString) - 1
     }
 
@@ -20,10 +22,10 @@ class Day5 : Day(5) {
             // map each distinct char in string to string without that char (all cases)
             // then map to reacted polymer and take the length, returning the lowest length
             val distinctUnits = polymer.toLowerCase().toCharArray().distinct()
-            return distinctUnits.parallelStream()
+            return distinctUnits
                     .map { polymer.replace(it.toString(), "", true) }
-                    .mapToInt { scanAndReact("", it).length }
-                    .min().orElse(0)
+                    .parallelMap { scanAndReact("", it).length }
+                    .min() ?: 0
 
         }
 

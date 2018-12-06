@@ -4,8 +4,8 @@ class Day6 : Day(6) {
 
     private val coords = toNamedCoords(inputList)
 
-    // todo improve performance
     override fun partOne(): Int {
+        println("// Day 6 Part 1 takes about 6 seconds...")
         val allGridCoords = (0..maxX(coords.values)).flatMap { x -> (0..maxY(coords.values)).map { y -> Pair(x, y) } }
         return allGridCoords.asSequence().map { toClosestName(it) to it }.groupingBy { it.first }
             .aggregate { _, accumulator: Set<Pair<Int, Int>>?, element, _ -> accumulator?.plus(element.second) ?: setOf(element.second) }

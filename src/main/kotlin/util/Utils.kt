@@ -1,5 +1,10 @@
 package util
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.runBlocking
+
 // return a sequence which lazily loops the input list forever
 fun <T : Any> infiniteList(xs: List<T>): Sequence<T> {
     var index = 0
@@ -35,4 +40,11 @@ fun <A, B> lazyAllPossiblePairs(`as`: Collection<A>, bs: Collection<B>): Sequenc
 // useful for day 5 part 1
 fun Char.sameLetterDifferentCase(that: Char): Boolean {
     return this.equals(that, true) && !this.equals(that, false)
+}
+
+// parallel map with kotlin coroutines
+fun <A, B> Collection<A>.parallelMap(mapper: (A) -> B): Collection<B> {
+    return runBlocking {
+        map { async(Dispatchers.IO) { mapper(it) } }.awaitAll()
+    }
 }
