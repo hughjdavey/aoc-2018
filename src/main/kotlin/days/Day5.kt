@@ -17,7 +17,6 @@ class Day5 : Day(5) {
 
     companion object {
 
-        // todo improve performance of this function
         fun shortestPolymer(polymer: String): Int {
             // map each distinct char in string to string without that char (all cases)
             // then map to reacted polymer and take the length, returning the lowest length

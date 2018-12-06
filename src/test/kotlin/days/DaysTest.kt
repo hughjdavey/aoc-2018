@@ -188,4 +188,34 @@ class DaysTest {
         val shortestPolymer = Day5.shortestPolymer("dabAcCaCBAcCcaDA")
         assertThat(shortestPolymer, `is`(4))
     }
+
+    @Test
+    fun testDaySixToCoords() {
+        // use test input from day 6
+        val coords = Day6.toNamedCoords(listOf("1, 1", "1, 6", "8, 3", "3, 4", "5, 5", "8, 9"))
+        assertThat(coords.toList(), containsInAnyOrder(
+            Pair("A", Pair(1, 1)), Pair("B", Pair(1, 6)), Pair("C", Pair(8, 3)),
+            Pair("D", Pair(3, 4)), Pair("E", Pair(5, 5)), Pair("F", Pair(8, 9))
+        ))
+
+        assertThat(Day6.maxX(coords.values), `is`(8))
+        assertThat(Day6.maxY(coords.values), `is`(9))
+
+        // test coord naming
+        val fiftyFiveCoords = Day6.toNamedCoords(IntArray(55).map { "$it, $it" })
+        assertThat(fiftyFiveCoords.keys, contains(
+            "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
+            "AA", "BB", "CC", "DD", "EE", "FF", "GG", "HH", "II", "JJ", "KK", "LL", "MM", "NN", "OO", "PP", "QQ", "RR", "SS", "TT", "UU", "VV", "WW", "XX", "YY", "ZZ",
+            "AAA", "BBB", "CCC"
+        ))
+    }
+
+    @Test
+    fun testDay6ManhattanDistance() {
+        // use test input from day 6
+        val coords = Day6.toNamedCoords(listOf("1, 1", "1, 6", "8, 3", "3, 4", "5, 5", "8, 9"))
+        assertThat(Day6.manhattanDistance(coords["A"]!!, coords["D"]!!), `is`(5))
+        assertThat(Day6.manhattanDistance(coords["C"]!!, coords["E"]!!), `is`(5))
+        assertThat(Day6.manhattanDistance(coords["A"]!!, coords["F"]!!), `is`(15))
+    }
 }
