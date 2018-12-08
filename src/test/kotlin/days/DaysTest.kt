@@ -1,6 +1,7 @@
 package days
 
 import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.collection.IsCollectionWithSize.hasSize
 import org.hamcrest.collection.IsEmptyCollection.empty
 import org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder
 import org.hamcrest.collection.IsIterableContainingInOrder.contains
@@ -211,11 +212,33 @@ class DaysTest {
     }
 
     @Test
-    fun testDay6ManhattanDistance() {
+    fun testDaySixManhattanDistance() {
         // use test input from day 6
         val coords = Day6.toNamedCoords(listOf("1, 1", "1, 6", "8, 3", "3, 4", "5, 5", "8, 9"))
         assertThat(Day6.manhattanDistance(coords["A"]!!, coords["D"]!!), `is`(5))
         assertThat(Day6.manhattanDistance(coords["C"]!!, coords["E"]!!), `is`(5))
         assertThat(Day6.manhattanDistance(coords["A"]!!, coords["F"]!!), `is`(15))
+    }
+
+    @Test
+    fun testDaySevenStepParsing() {
+        // use test input from day 7
+        val input = listOf(
+            "Step C must be finished before step A can begin.",
+            "Step C must be finished before step F can begin.",
+            "Step A must be finished before step B can begin.",
+            "Step A must be finished before step D can begin.",
+            "Step B must be finished before step E can begin.",
+            "Step D must be finished before step E can begin.",
+            "Step F must be finished before step E can begin.")
+
+        val steps = Day7.parseSteps(input)
+        assertThat(steps, hasSize(6))
+        assertThat(steps.find { it.name == 'A' }!!.dependencies, contains('C'))
+        assertThat(steps.find { it.name == 'B' }!!.dependencies, contains('A'))
+        assertThat(steps.find { it.name == 'C' }!!.dependencies, empty())
+        assertThat(steps.find { it.name == 'D' }!!.dependencies, contains('A'))
+        assertThat(steps.find { it.name == 'E' }!!.dependencies, contains('B', 'D', 'F'))
+        assertThat(steps.find { it.name == 'F' }!!.dependencies, contains('C'))
     }
 }

@@ -48,3 +48,9 @@ fun <A, B> Collection<A>.parallelMap(mapper: (A) -> B): Collection<B> {
         map { async(Dispatchers.IO) { mapper(it) } }.awaitAll()
     }
 }
+
+// useful for day 7 parsing steps
+fun <T> MutableCollection<T>.addAndGet(t: T): T {
+    this.add(t)
+    return t
+}
