@@ -241,4 +241,44 @@ class DaysTest {
         assertThat(steps.find { it.name == 'E' }!!.dependencies, contains('B', 'D', 'F'))
         assertThat(steps.find { it.name == 'F' }!!.dependencies, contains('C'))
     }
+
+    @Test
+    fun testDayEightTreeParsing() {
+        // use test input from day 8
+        val root = Day8.parseTree("2 3 0 3 10 11 12 1 1 0 1 99 2 1 1 2")
+
+        // A
+        assertThat(root.header, `is`(2 to 3))
+        assertThat(root.childNodes.size, `is`(2))
+        assertThat(root.metadata, containsInAnyOrder(1, 1, 2))
+
+        // B
+        assertThat(root.childNodes[0].header, `is`(0 to 3))
+        assertThat(root.childNodes[0].childNodes.size, `is`(0))
+        assertThat(root.childNodes[0].metadata, containsInAnyOrder(10, 11, 12))
+
+        // C
+        assertThat(root.childNodes[1].header, `is`(1 to 1))
+        assertThat(root.childNodes[1].childNodes.size, `is`(1))
+        assertThat(root.childNodes[1].metadata, containsInAnyOrder(2))
+
+        // D
+        assertThat(root.childNodes[1].childNodes[0].header, `is`(0 to 1))
+        assertThat(root.childNodes[1].childNodes[0].childNodes.size, `is`(0))
+        assertThat(root.childNodes[1].childNodes[0].metadata, containsInAnyOrder(99))
+    }
+
+    @Test
+    fun testDayEightMetadataSum() {
+        // use test input from day 8
+        val root = Day8.parseTree("2 3 0 3 10 11 12 1 1 0 1 99 2 1 1 2")
+        assertThat(Day8.metadataSum(root), `is`(138))
+    }
+
+    @Test
+    fun testDayEightNodeValue() {
+        // use test input from day 8
+        val root = Day8.parseTree("2 3 0 3 10 11 12 1 1 0 1 99 2 1 1 2")
+        assertThat(Day8.nodeValue(root), `is`(66))
+    }
 }
