@@ -281,4 +281,14 @@ class DaysTest {
         val root = Day8.parseTree("2 3 0 3 10 11 12 1 1 0 1 99 2 1 1 2")
         assertThat(Day8.nodeValue(root), `is`(66))
     }
+
+    @Test
+    fun testDayNineWinningScores() {
+        assertThat(Day9.winningScore(9, 25), `is`(32L))
+        assertThat(Day9.winningScore(10, 1618), `is`(8317L))
+        assertThat(Day9.winningScore(13, 7999), `is`(146373L))
+        assertThat(Day9.winningScore(17, 1104), `is`(2764L))
+        assertThat(Day9.winningScore(21, 6111), `is`(54718L))
+        assertThat(Day9.winningScore(30, 5807), `is`(37305L))
+    }
 }
