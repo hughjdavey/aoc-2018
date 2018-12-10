@@ -291,4 +291,50 @@ class DaysTest {
         assertThat(Day9.winningScore(21, 6111), `is`(54718L))
         assertThat(Day9.winningScore(30, 5807), `is`(37305L))
     }
+
+    @Test
+    fun testDayTenPointParsing() {
+        val points = Day10.parsePoints(day10TestPoints)
+        assertThat(points, hasSize(31))
+
+        // only test selected as there are so many
+        assertThat(points[0], `is`(Day10.LightPoint(9 to 1, 0 to 2)))
+        assertThat(points[10], `is`(Day10.LightPoint(-2 to 3, 1 to 0)))
+        assertThat(points[20], `is`(Day10.LightPoint(0 to 5, 0 to -1)))
+        assertThat(points[30], `is`(Day10.LightPoint(-3 to 6, 2 to -1)))
+    }
+
+    @Test
+    fun testDay10CorrectMessage() {
+        var points = Day10.parsePoints(day10TestPoints)
+        assertThat(points, hasSize(31))
+
+        // pass 3 seconds
+        (0 until 3).forEach { points = points.map { Day10.moveOneSecond(it) } }
+
+        val gridAfterThreeSeconds = Day10.drawOnGrid(points)
+        assertThat(gridAfterThreeSeconds, `is`(
+            "\n" +
+            "# . . . # . . # # # \n" +
+            "# . . . # . . . # . \n" +
+            "# . . . # . . . # . \n" +
+            "# # # # # . . . # . \n" +
+            "# . . . # . . . # . \n" +
+            "# . . . # . . . # . \n" +
+            "# . . . # . . . # . \n" +
+            "# . . . # . . # # # "
+        ))
+    }
+
+    companion object {
+
+        private val day10TestPoints = listOf(
+            "position=< 9,  1> velocity=< 0,  2>", "position=< 7,  0> velocity=<-1,  0>", "position=< 3, -2> velocity=<-1,  1>", "position=< 6, 10> velocity=<-2, -1>", "position=< 2, -4> velocity=< 2,  2>", "position=<-6, 10> velocity=< 2, -2>",
+            "position=< 1,  8> velocity=< 1, -1>", "position=< 1,  7> velocity=< 1,  0>", "position=<-3, 11> velocity=< 1, -2>", "position=< 7,  6> velocity=<-1, -1>", "position=<-2,  3> velocity=< 1,  0>", "position=<-4,  3> velocity=< 2,  0>",
+            "position=<10, -3> velocity=<-1,  1>", "position=< 5, 11> velocity=< 1, -2>", "position=< 4,  7> velocity=< 0, -1>", "position=< 8, -2> velocity=< 0,  1>", "position=<15,  0> velocity=<-2,  0>","position=< 1,  6> velocity=< 1,  0>",
+            "position=< 8,  9> velocity=< 0, -1>", "position=< 3,  3> velocity=<-1,  1>", "position=< 0,  5> velocity=< 0, -1>", "position=<-2,  2> velocity=< 2,  0>", "position=< 5, -2> velocity=< 1,  2>", "position=< 1,  4> velocity=< 2,  1>",
+            "position=<-2,  7> velocity=< 2, -2>", "position=< 3,  6> velocity=<-1, -1>", "position=< 5,  0> velocity=< 1,  0>", "position=<-6,  0> velocity=< 2,  0>", "position=< 5,  9> velocity=< 1, -2>", "position=<14,  7> velocity=<-2,  0>",
+            "position=<-3,  6> velocity=< 2, -1>"
+        )
+    }
 }
