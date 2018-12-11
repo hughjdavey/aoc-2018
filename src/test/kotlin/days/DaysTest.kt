@@ -326,6 +326,42 @@ class DaysTest {
         ))
     }
 
+    @Test
+    fun testDay11FuelCellPowerLevel() {
+        // examples from day 11 part 1
+        assertThat(Day11.FuelCell(3 to 5).powerLevel(8), `is`(4))
+        assertThat(Day11.FuelCell(122 to 79).powerLevel(57), `is`(-5))
+        assertThat(Day11.FuelCell(217 to 196).powerLevel(39), `is`(0))
+        assertThat(Day11.FuelCell(101 to 153).powerLevel(71), `is`(4))
+    }
+
+    @Test
+    fun testDay11Get3x3Square() {
+        val grid: Array<Array<Int>> = arrayOf(
+            arrayOf(0,  1,  2,  3,  4),
+            arrayOf(5,  6,  7,  8,  9),
+            arrayOf(10, 11, 12, 13, 14),
+            arrayOf(15, 16, 17, 18, 19),
+            arrayOf(20, 21, 22, 23, 24)
+        )
+
+        val topLeft3x3 = Day11.get3x3Square(grid, 0 to 0)
+        assertThat(topLeft3x3, containsInAnyOrder(0, 1, 2, 5, 6, 7, 10, 11, 12))
+
+        val middle3x3 = Day11.get3x3Square(grid, 2 to 2)
+        assertThat(middle3x3, containsInAnyOrder(12, 13, 14, 17, 18, 19, 22, 23, 24))
+
+        val invalid3x3 = Day11.get3x3Square(grid, 3 to 3)
+        assertThat(invalid3x3, empty())
+    }
+
+    @Test
+    fun testDay11HighestPower() {
+        val grid = Day11.FuelCell.getFuelCellGrid()
+        assertThat(Day11.highestPowerInGrid(grid, 18), `is`(33 to 45))
+        assertThat(Day11.highestPowerInGrid(grid, 42), `is`(21 to 61))
+    }
+
     companion object {
 
         private val day10TestPoints = listOf(
