@@ -7,6 +7,7 @@ import org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder
 import org.hamcrest.collection.IsIterableContainingInOrder.contains
 import org.hamcrest.core.Is.`is`
 import org.hamcrest.core.IsNull.notNullValue
+import org.hamcrest.core.StringContains.containsString
 import org.junit.Test
 import util.lazyAllPossiblePairs
 import java.time.LocalDateTime
@@ -399,6 +400,84 @@ class DaysTest {
 
         val border3 = Day11.getBorder(grid, 0 to 0, 4)
         assertThat(border3, containsInAnyOrder(4, 9, 14, 19, 24, 23, 22, 21, 20))
+    }
+
+    @Test
+    fun testDay12ParseInitialState() {
+        val initialState1 = Day12.parseInitialState("initial state: #..##....")
+        assertThat(initialState1.length, `is`(9))
+        assertThat(initialState1.mapIndexed { index, c -> if (c == '#') index else null }.filterNotNull(), contains(0, 3, 4))
+
+        val initialState2 = Day12.parseInitialState("initial state: #..#.#..##......###...###")
+        assertThat(initialState2.length, `is`(25))
+        assertThat(initialState2.mapIndexed { index, c -> if (c == '#') index else null }.filterNotNull(), contains(0, 3, 5, 8, 9, 16, 17, 18, 22, 23, 24))
+    }
+
+    @Test
+    fun testDay12Rules() {
+        val notes = Day12.parseRules(listOf("..#.. => .", "##.## => .", ".##.# => #"))
+        assertThat(notes, hasSize(3))
+        assertThat(notes, contains(
+            Day12.Rule("..#..", '.'),
+            Day12.Rule("##.##", '.'),
+            Day12.Rule(".##.#", '#')
+        ))
+    }
+
+    @Test
+    fun testDay12PadState() {
+        assertThat(Day12.padState(""), `is`(".........." to 5))
+        assertThat(Day12.padState("#..##...."), `is`(".....#..##....." to 5))
+        assertThat(Day12.padState(".#..##.."), `is`(".....#..##....." to 4))
+        assertThat(Day12.padState("...#..##"), `is`(".....#..##....." to 2))
+    }
+
+    @Test
+    fun testDay12DoGeneration() {
+        val initialState = "#..#.#..##......###...###"
+        val rules = Day12.parseRules(listOf(
+            "...## => #", "..#.. => #", ".#... => #", ".#.#. => #", ".#.## => #", ".##.. => #", ".#### => #",
+            "#.#.# => #", "#.### => #", "##.#. => #", "##.## => #", "###.. => #", "###.# => #", "####. => #"
+        ))
+
+        val endState = Day12.doGeneration(initialState to 0, rules)
+        assertThat(endState.first, containsString("#...#....#.....#..#..#..#"))
+        assertThat(endState.second, `is`(5))
+    }
+
+    @Test
+    fun testDay12DoGenerations() {
+        val initialState = "#..#.#..##......###...###..........."
+        val rules = Day12.parseRules(listOf(
+            "...## => #", "..#.. => #", ".#... => #", ".#.#. => #", ".#.## => #", ".##.. => #", ".#### => #",
+            "#.#.# => #", "#.### => #", "##.#. => #", "##.## => #", "###.. => #", "###.# => #", "####. => #"
+        ))
+
+        assertThat(Day12.doGenerations(initialState, rules, 1).first, containsString("...#...#....#.....#..#..#..#..........."))
+        assertThat(Day12.doGenerations(initialState, rules, 2).first, containsString("...##..##...##....#..#..#..##.........."))
+        assertThat(Day12.doGenerations(initialState, rules, 3).first, containsString("..#.#...#..#.#....#..#..#...#.........."))
+        assertThat(Day12.doGenerations(initialState, rules, 4).first, containsString("...#.#..#...#.#...#..#..##..##........."))
+        assertThat(Day12.doGenerations(initialState, rules, 5).first, containsString("....#...##...#.#..#..#...#...#........."))
+        assertThat(Day12.doGenerations(initialState, rules, 6).first, containsString("....##.#.#....#...#..##..##..##........"))
+        assertThat(Day12.doGenerations(initialState, rules, 7).first, containsString("...#..###.#...##..#...#...#...#........"))
+        assertThat(Day12.doGenerations(initialState, rules, 8).first, containsString("...#....##.#.#.#..##..##..##..##......."))
+        assertThat(Day12.doGenerations(initialState, rules, 9).first, containsString("...##..#..#####....#...#...#...#......."))
+        assertThat(Day12.doGenerations(initialState, rules, 10).first, containsString("..#.#..#...#.##....##..##..##..##......"))
+        assertThat(Day12.doGenerations(initialState, rules, 11).first, containsString("...#...##...#.#...#.#...#...#...#......"))
+        assertThat(Day12.doGenerations(initialState, rules, 12).first, containsString("...##.#.#....#.#...#.#..##..##..##....."))
+        assertThat(Day12.doGenerations(initialState, rules, 13).first, containsString("..#..###.#....#.#...#....#...#...#....."))
+        assertThat(Day12.doGenerations(initialState, rules, 14).first, containsString("..#....##.#....#.#..##...##..##..##...."))
+        assertThat(Day12.doGenerations(initialState, rules, 15).first, containsString("..##..#..#.#....#....#..#.#...#...#...."))
+        assertThat(Day12.doGenerations(initialState, rules, 16).first, containsString(".#.#..#...#.#...##...#...#.#..##..##..."))
+        assertThat(Day12.doGenerations(initialState, rules, 17).first, containsString("..#...##...#.#.#.#...##...#....#...#..."))
+        assertThat(Day12.doGenerations(initialState, rules, 18).first, containsString("..##.#.#....#####.#.#.#...##...##..##.."))
+        assertThat(Day12.doGenerations(initialState, rules, 19).first, containsString(".#..###.#..#.#.#######.#.#.#..#.#...#.."))
+
+        // extra tests for 20 :)
+        val twentyGenerations = Day12.doGenerations(initialState, rules, 20)
+        assertThat(twentyGenerations.first, containsString(".#....##....#####...#######....#.#..##."))
+        assertThat(twentyGenerations.second, `is`(7))
+        assertThat(Day12.totalPlantContainingPots(twentyGenerations), `is`(325L))
     }
 
     companion object {
