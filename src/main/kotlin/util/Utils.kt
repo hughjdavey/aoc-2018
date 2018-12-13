@@ -54,3 +54,8 @@ fun <T> MutableCollection<T>.addAndGet(t: T): T {
     this.add(t)
     return t
 }
+
+//
+fun <A, B> cartesianProduct(`as`: Iterable<A>, bs: Iterable<B>): List<Pair<A, B>> {
+    return `as`.flatMap { a -> bs.map { b -> Pair(a, b) } }
+}
