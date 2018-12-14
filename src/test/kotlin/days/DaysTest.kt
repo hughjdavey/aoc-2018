@@ -547,6 +547,76 @@ class DaysTest {
         assertThat(initialState.flatten().find { it.second != null }!!.second!!.location, `is`(6 to 4))
     }
 
+    @Test
+    fun testDay14ElfChooseNext() {
+        val scoreboard = listOf(3, 7, 1, 0, 1, 0, 1, 2, 4, 5, 1)
+        val elf = Day14.Elf(4)
+
+        elf.chooseNext(scoreboard)
+        assertThat(elf.indexOfCurrentRecipe, `is`(6))
+        assertThat(scoreboard[elf.indexOfCurrentRecipe], `is`(1))
+
+        elf.chooseNext(scoreboard)
+        assertThat(elf.indexOfCurrentRecipe, `is`(8))
+        assertThat(scoreboard[elf.indexOfCurrentRecipe], `is`(4))
+
+        elf.chooseNext(scoreboard)
+        assertThat(elf.indexOfCurrentRecipe, `is`(2))
+        assertThat(scoreboard[elf.indexOfCurrentRecipe], `is`(1))
+    }
+
+    @Test
+    fun testDay14PrettyPrint() {
+        val elves = Day14.Elf(8) to Day14.Elf(4)
+        val scoreboard = listOf(3, 7, 1, 0, 1, 0, 1, 2, 4, 5, 1)
+        assertThat(Day14.scoreboardToString(elves, scoreboard), `is`("3  7  1  0  [1]  0  1  2  (4)  5  1"))
+    }
+
+    @Test
+    fun testDay14Scoreboard() {
+        val expectedScoreboards = listOf(
+            "(3)  [7]",
+            "(3)  [7]  1  0",
+            "3  7  1  [0]  (1)  0",
+            "3  7  1  0  [1]  0  (1)",
+            "(3)  7  1  0  1  0  [1]  2",
+            "3  7  1  0  (1)  0  1  2  [4]",
+            "3  7  1  [0]  1  0  (1)  2  4  5",
+            "3  7  1  0  [1]  0  1  2  (4)  5  1",
+            "3  (7)  1  0  1  0  [1]  2  4  5  1  5",
+            "3  7  1  0  1  0  1  2  [4]  (5)  1  5  8",
+            "3  (7)  1  0  1  0  1  2  4  5  1  5  8  [9]",
+            "3  7  1  0  1  0  1  [2]  4  (5)  1  5  8  9  1  6",
+            "3  7  1  0  1  0  1  2  4  5  [1]  5  8  9  1  (6)  7",
+            "3  7  1  0  (1)  0  1  2  4  5  1  5  [8]  9  1  6  7  7",
+            "3  7  [1]  0  1  0  (1)  2  4  5  1  5  8  9  1  6  7  7  9",
+            "3  7  1  0  [1]  0  1  2  (4)  5  1  5  8  9  1  6  7  7  9  2"
+        )
+        val elves = Day14.Elf(0) to Day14.Elf(1)
+        var scoreboard = listOf(3, 7)
+
+        for (i in 0 until 15) {
+            assertThat(Day14.scoreboardToString(elves, scoreboard), `is`(expectedScoreboards[i]))
+            scoreboard = Day14.foo(elves, scoreboard.toMutableList())
+        }
+    }
+
+    @Test
+    fun testDay14ScoresAfter() {
+        assertThat(Day14.recipeScoresAfter(9), `is`("5158916779"))
+        assertThat(Day14.recipeScoresAfter(5), `is`("0124515891"))
+        assertThat(Day14.recipeScoresAfter(18), `is`("9251071085"))
+        assertThat(Day14.recipeScoresAfter(2018), `is`("5941429882"))
+    }
+
+    @Test
+    fun testDay14ScoresBefore() {
+        assertThat(Day14.recipeScoresBefore("51589"), `is`(9))
+        assertThat(Day14.recipeScoresBefore("01245"), `is`(5))
+        assertThat(Day14.recipeScoresBefore("92510"), `is`(18))
+        assertThat(Day14.recipeScoresBefore("59414"), `is`(2018))
+    }
+
     companion object {
 
         private val day10TestPoints = listOf(
