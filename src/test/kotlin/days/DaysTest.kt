@@ -480,6 +480,73 @@ class DaysTest {
         assertThat(Day12.totalPlantContainingPots(twentyGenerations), `is`(325L))
     }
 
+    @Test
+    fun testDay13CartsIntersectionBehaviour() {
+        val cart = Day13.Cart('>', 0 to 0)
+        assertThat(cart.intersectionBehaviour.next(), `is`('l'))
+        assertThat(cart.intersectionBehaviour.next(), `is`('s'))
+        assertThat(cart.intersectionBehaviour.next(), `is`('r'))
+        assertThat(cart.intersectionBehaviour.next(), `is`('l'))
+        assertThat(cart.intersectionBehaviour.next(), `is`('s'))
+        assertThat(cart.intersectionBehaviour.next(), `is`('r'))
+        assertThat(cart.intersectionBehaviour.next(), `is`('l'))
+    }
+
+    @Test
+    fun testDay13SimpleCollision() {
+        val initialState = Day13.initCarts(listOf(
+            "|",
+            "v",
+            "|",
+            "|",
+            "|",
+            "^",
+            "|"
+        ))
+
+        Day13.doTick(initialState, 1)
+        Day13.doTick(initialState, 2)
+        assertThat(initialState.flatten().find { it.second != null && it.second!!.state == 'X' }!!.second!!.location, `is`(0 to 3))
+    }
+
+    @Test
+    fun testDay13ComplexCollision() {
+        val initialState = Day13.initCarts(listOf(
+            """/->-\        """,
+            """|   |  /----\""",
+            """| /-+--+-\  |""",
+            """| | |  | v  |""",
+            """\-+-/  \-+--/""",
+            """  \------/"""
+        ))
+
+        var iteration = 1
+        while (initialState.flatten().none { it.second != null && it.second!!.state == 'X' }) {
+            Day13.doTick(initialState, iteration++)
+        }
+        assertThat(initialState.flatten().find { it.second != null && it.second!!.state == 'X' }!!.second!!.location, `is`(7 to 3))
+    }
+
+    @Test
+    fun testDay13CollisionRemoval() {
+        val initialState = Day13.initCarts(listOf(
+            """/>-<\  """,
+            """|   |  """,
+            """| /<+-\""",
+            """| | | v""",
+            """\>+</ |""",
+            """  |   ^""",
+            """  \<->/"""
+        ))
+
+        Day13.doTick(initialState, 1, true)
+        Day13.doTick(initialState, 2, true)
+        Day13.doTick(initialState, 3, true)
+
+        assertThat(initialState.flatten().filter { it.second != null }, hasSize(1))
+        assertThat(initialState.flatten().find { it.second != null }!!.second!!.location, `is`(6 to 4))
+    }
+
     companion object {
 
         private val day10TestPoints = listOf(

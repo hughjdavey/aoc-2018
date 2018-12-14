@@ -1,5 +1,6 @@
 package util
 
+import days.Day13
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -59,3 +60,6 @@ fun <T> MutableCollection<T>.addAndGet(t: T): T {
 fun <A, B> cartesianProduct(`as`: Iterable<A>, bs: Iterable<B>): List<Pair<A, B>> {
     return `as`.flatMap { a -> bs.map { b -> Pair(a, b) } }
 }
+
+// very useful for Day 13
+typealias Tracks = Array<Array<Pair<Char, Day13.Cart?>>>
