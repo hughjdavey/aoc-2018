@@ -7,6 +7,7 @@ class Day14 : Day(14) {
     }
 
     override fun partTwo(): Any {
+        println("// Day 14 Part 2 takes about 9 seconds...")
         return recipeScoresBefore(inputString.trim())
     }
 

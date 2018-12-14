@@ -358,49 +358,16 @@ class DaysTest {
 
     @Test
     fun testDay11Part1HighestPower() {
-        val grid = Day11.FuelCell.getFuelCellGrid()
-        assertThat(Day11.highestPowerInGrid(grid, 18), `is`(33 to 45))
-        assertThat(Day11.highestPowerInGrid(grid, 42), `is`(21 to 61))
+        assertThat(Day11.highestPowerInGrid(Day11.FuelCell.getFuelCellGrid(), 18), `is`(33 to 45))
+        assertThat(Day11.highestPowerInGrid(Day11.FuelCell.getFuelCellGrid(), 42), `is`(21 to 61))
     }
 
-    @Test
-    fun testDay11Part2HighestPower() {
-        val grid = Day11.FuelCell.getFuelCellGrid()
-        assertThat(Day11.highestPowerInGrid2(grid, 18), `is`(Triple(90, 269, 16)))
-        assertThat(Day11.highestPowerInGrid2(grid, 42), `is`(Triple(232, 251, 12)))
-    }
-
-    @Test
-    fun testDay11Part2SquareIndices() {
-        val indices2x2Startingat0x0 = Day11.getIndices(0 to 0, 2)
-        assertThat(indices2x2Startingat0x0, containsInAnyOrder(0 to 0, 0 to 1, 1 to 0, 1 to 1))
-
-        val indices3x3Startingat0x0 = Day11.getIndices(0 to 0, 3)
-        assertThat(indices3x3Startingat0x0, containsInAnyOrder(0 to 0, 1 to 0, 2 to 0, 0 to 1, 1 to 1, 2 to 1, 0 to 2, 1 to 2, 2 to 2))
-
-        val indices3x3Startingat4x2 = Day11.getIndices(4 to 2, 3)
-        assertThat(indices3x3Startingat4x2, containsInAnyOrder(4 to 2, 5 to 2, 6 to 2, 4 to 3, 5 to 3, 6 to 3, 4 to 4, 5 to 4, 6 to 4))
-    }
-
-    @Test
-    fun testGetBorder() {
-        val grid: Array<Array<Int>> = arrayOf(
-            arrayOf(0,  1,  2,  3,  4),
-            arrayOf(5,  6,  7,  8,  9),
-            arrayOf(10, 11, 12, 13, 14),
-            arrayOf(15, 16, 17, 18, 19),
-            arrayOf(20, 21, 22, 23, 24)
-        )
-
-        val border1 = Day11.getBorder(grid, 0 to 0, 2)
-        assertThat(border1, containsInAnyOrder(2, 7, 12, 10, 11))
-
-        val border2 = Day11.getBorder(grid, 0 to 0, 3)
-        assertThat(border2, containsInAnyOrder(3, 8, 13, 18, 17, 16, 15))
-
-        val border3 = Day11.getBorder(grid, 0 to 0, 4)
-        assertThat(border3, containsInAnyOrder(4, 9, 14, 19, 24, 23, 22, 21, 20))
-    }
+//    @Test
+//    fun testDay11Part2HighestPower() {
+//        val grid = Day11.FuelCell.getFuelCellGrid()
+//        assertThat(Day11.highestPowerInGrid2(grid, 18), `is`(Triple(90, 269, 16)))
+//        assertThat(Day11.highestPowerInGrid2(grid, 42), `is`(Triple(232, 251, 12)))
+//    }
 
     @Test
     fun testDay12ParseInitialState() {
