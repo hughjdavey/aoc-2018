@@ -584,6 +584,110 @@ class DaysTest {
         assertThat(Day14.recipeScoresBefore("59414"), `is`(2018))
     }
 
+//    @Test
+//    fun testDay15Arena() {
+//        val arena = Arena.getArena(listOf(
+//            "#######",
+//            "#.G.E.#",
+//            "#E.G.E#",
+//            "#.G.E.#",
+//            "#######"
+//        ))
+//
+//        assertThat(arena.toString(), `is`("#######\n#.G.E.#\n#E.G.E#\n#.G.E.#\n#######\n"))
+//        assertThat(arena.livingCombatants(), `is`(7))
+//
+//        assertThat(arena.getSurroundingTiles(0 to 0), containsInAnyOrder(
+//            ArenaTile(0 to 1, '#'), ArenaTile(1 to 0, '#'), null, null
+//        ))
+//
+//        assertThat(arena.getSurroundingTiles(3 to 2), containsInAnyOrder(
+//            ArenaTile(3 to 1, '.'), ArenaTile(3 to 3, '.'), ArenaTile(2 to 2, '.'), ArenaTile(4 to 2, '.')
+//        ))
+//
+//        assertThat(arena.getSurroundingTiles(4 to 4), containsInAnyOrder(
+//            ArenaTile(3 to 4, '#'), ArenaTile(5 to 4, '#'), ArenaTile(4 to 3, 'E'), null
+//        ))
+//    }
+//
+//    @Test
+//    fun testDay15Dijkstra() {
+//        val arena = Arena.getArena(listOf(
+//            "#######",
+//            "#.G.E.#",
+//            "#E...E#",
+//            "#.G.E.#",
+//            "#######"
+//        ))
+//
+//        val elf = arena.get(4, 1)
+//        val goblin = arena.get(2, 3)
+//        val surrounding = arena.getSurroundingTiles(goblin.location)
+//
+//        val shortestPaths = surrounding.filterNotNull().mapNotNull { arena.dijkstra(elf, it) }
+//
+//        shortestPaths.map { it.path.map { it.location.toString() + " => " }.joinToString("") }.forEach { println(it) }
+//
+//        assertThat(shortestPaths, hasSize(4))
+//        //assertThat(shortestPaths.map { it.path.map { it.location } }, containsInAnyOrder(
+//        //    listOf(4 to 1, 4 to 2, 3 to 2, 2 to 2),
+//        //    listOf(4 to 1, 4 to 2, 3 to 2, 2 to 2)
+//        //))
+//    }
+//
+//    @Test
+//    fun testDay15Foo() {
+//        val arena = Arena.getArena(listOf(
+//            "#######",
+//            "#.G.E.#",
+//            "#E.G.E#",
+//            "#.G.E.#",
+//            "#######"
+//        ))
+//
+//        println(arena)
+//        Day15.doRound(arena)
+//        println(arena)
+//    }
+
+    @Test
+    fun testDay16Parsing() {
+        val input = listOf(
+            "Before: [0, 1, 2, 1]",
+            "14 1 3 3",
+            "After:  [0, 1, 2, 1]",
+            "",
+            "Before: [3, 2, 2, 3]",
+            "13 2 1 3",
+            "After:  [3, 2, 2, 1]",
+            "",
+            "Before: [2, 2, 2, 2]",
+            "13 2 1 0",
+            "After:  [1, 2, 2, 2]",
+            ""
+        )
+
+        val samples = Day16.parseSamples(input)
+        System.err.println(samples)
+        assertThat(samples, containsInAnyOrder(
+            Day16.Sample(intArrayOf(0, 1, 2, 1), intArrayOf(0, 1, 2, 1), 14, 1, 3, 3),
+            Day16.Sample(intArrayOf(3, 2, 2, 3), intArrayOf(3, 2, 2, 1), 13, 2, 1, 3),
+            Day16.Sample(intArrayOf(2, 2, 2, 2), intArrayOf(1, 2, 2, 2), 13, 2, 1, 0)
+        ))
+    }
+
+    @Test
+    fun testDay16Possibilities() {
+        val sample = Day16.parseSamples(listOf(
+            "Before: [3, 2, 1, 1]",
+            "9 2 1 2",
+            "After:  [3, 2, 2, 1]",
+            ""
+        )).first()
+        val possibleInstructions = Day16.getPossibilities(sample)
+        assertThat(possibleInstructions, containsInAnyOrder("mulr", "addi", "seti"))
+    }
+
     companion object {
 
         private val day10TestPoints = listOf(
