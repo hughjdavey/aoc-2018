@@ -1,5 +1,7 @@
 package days
 
+import days.Day18.Companion.getAdjacent
+import days.Day18.Companion.prettyPrint
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.collection.IsCollectionWithSize.hasSize
 import org.hamcrest.collection.IsEmptyCollection.empty
@@ -686,6 +688,62 @@ class DaysTest {
         )).first()
         val possibleInstructions = Day16.getPossibilities(sample)
         assertThat(possibleInstructions, containsInAnyOrder("mulr", "addi", "seti"))
+    }
+
+    @Test
+    fun testDay18Areas() {
+        val input = listOf(
+            ".#.#...|#.",
+            ".....#|##|",
+            ".|..|...#.",
+            "..|#.....#",
+            "#.#|||#|#|",
+            "...#.||...",
+            ".|....|...",
+            "||...#|.#|",
+            "|.||||..|.",
+            "...#.|..|."
+        )
+
+        val parsed = Day18.parseArea(input)
+        assertThat(parsed[0][0], `is`(Day18.Acre('.', 0 to 0)))
+        assertThat(parsed[1][0], `is`(Day18.Acre('#', 1 to 0)))
+        assertThat(parsed[6][7], `is`(Day18.Acre('|', 6 to 7)))
+
+        val middleAdjacent = getAdjacent(Day18.Acre('|', 6 to 7), parsed)
+        assertThat(middleAdjacent, hasSize(8))
+        assertThat(middleAdjacent, containsInAnyOrder(
+            Day18.Acre('.', 5 to 6), Day18.Acre('|', 6 to 6), Day18.Acre('.', 7 to 6),
+            Day18.Acre('#', 5 to 7), Day18.Acre('.', 7 to 7),
+            Day18.Acre('|', 5 to 8), Day18.Acre('.', 6 to 8), Day18.Acre('.', 7 to 8)
+        ))
+
+        val edgeAdjacent = getAdjacent(Day18.Acre('.', 0 to 0), parsed)
+        assertThat(edgeAdjacent, hasSize(3))
+        assertThat(edgeAdjacent, containsInAnyOrder(
+            Day18.Acre('#', 1 to 0), Day18.Acre('.', 1 to 1), Day18.Acre('.', 0 to 1)
+        ))
+    }
+
+    @Test
+    fun testDay18AreaMinutes() {
+        val input = listOf(
+            ".#.#...|#.",
+            ".....#|##|",
+            ".|..|...#.",
+            "..|#.....#",
+            "#.#|||#|#|",
+            "...#.||...",
+            ".|....|...",
+            "||...#|.#|",
+            "|.||||..|.",
+            "...#.|..|."
+        )
+
+        var parsed = Day18.parseArea(input)
+        (1..10).forEach { parsed = Day18.doMinute(parsed) }
+        assertThat(parsed.flatten().count { it.isTrees() }, `is`(37))
+        assertThat(parsed.flatten().count { it.isYard() }, `is`(31))
     }
 
     companion object {
