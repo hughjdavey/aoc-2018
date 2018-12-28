@@ -1,7 +1,6 @@
 package days
 
 import days.Day18.Companion.getAdjacent
-import days.Day18.Companion.prettyPrint
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.collection.IsCollectionWithSize.hasSize
 import org.hamcrest.collection.IsEmptyCollection.empty
@@ -744,6 +743,48 @@ class DaysTest {
         (1..10).forEach { parsed = Day18.doMinute(parsed) }
         assertThat(parsed.flatten().count { it.isTrees() }, `is`(37))
         assertThat(parsed.flatten().count { it.isYard() }, `is`(31))
+    }
+
+    @Test
+    fun testDay19Parsing() {
+        val input = listOf(
+            "#ip 0",
+            "seti 5 0 1",
+            "seti 6 0 2",
+            "addi 0 1 0",
+            "addr 1 2 3",
+            "setr 1 0 0",
+            "seti 8 0 4",
+            "seti 9 0 5"
+        )
+
+        val instructions = input.drop(1).map { Day19.parseInstruction(it) }
+        assertThat(instructions, contains(
+            Day19.Instruction("seti", 5, 0, 1),
+            Day19.Instruction("seti", 6, 0, 2),
+            Day19.Instruction("addi", 0, 1, 0),
+            Day19.Instruction("addr", 1, 2, 3),
+            Day19.Instruction("setr", 1, 0, 0),
+            Day19.Instruction("seti", 8, 0, 4),
+            Day19.Instruction("seti", 9, 0, 5)
+        ))
+    }
+
+    @Test
+    fun testDay19() {
+        val input = listOf(
+            "#ip 0",
+            "seti 5 0 1",
+            "seti 6 0 2",
+            "addi 0 1 0",
+            "addr 1 2 3",
+            "setr 1 0 0",
+            "seti 8 0 4",
+            "seti 9 0 5"
+        )
+
+        val out = Day19.runProgram(input)
+        assertThat(out.second.toList(), contains(7, 5, 6, 0, 0, 9))
     }
 
     companion object {
